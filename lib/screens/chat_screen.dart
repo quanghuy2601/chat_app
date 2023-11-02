@@ -27,7 +27,7 @@ class _ChatScreenState extends State<ChatScreen> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back_ios,
               color: Color.fromRGBO(163, 52, 250, 1),
             ),
@@ -178,7 +178,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           padding: const EdgeInsets.only(left: 2, right: 2, bottom: 8),
                           child: CircleAvatar(
                             radius: 25,
-                            backgroundColor: const Color(0xFF128C7E),
+                            backgroundColor: const Color.fromRGBO(163, 52, 250, 1),
                             child: IconButton(
                               onPressed: () {
                                 if (sendButton) {

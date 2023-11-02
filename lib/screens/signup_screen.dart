@@ -20,6 +20,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _birthdayController = TextEditingController();
 
+  final TextStyle _validStyle = const TextStyle(color: Colors.green);
+  final TextStyle _inValidStyle = const TextStyle(color: Colors.red);
+  final TextStyle _defaultStyle = const TextStyle(color: Colors.grey);
+
+  bool _isUsernameValid = false;
+  bool _isMailValid = false;
+  bool _isValidPassword = false;
+  bool _isConfirmPassword = false;
+  bool _isGender = false;
+  bool _isBirthday = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,11 +55,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 10),
                   Text(
-                    "Create your account",
+                    "Điền thông tin tài khoản",
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.white,
@@ -59,6 +68,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Column(
                 children: <Widget>[
                   TextField(
+                    onChanged: (value) {
+                      bool hasLowercase = false;
+                      bool hasDigit = false;
+
+                      for (int i = 0; i < value.length; i++) {
+                        if (value[i].toLowerCase() == value[i] && value[i].toUpperCase() != value[i]) {
+                          hasLowercase = true;
+                        } else if (int.tryParse(value[i]) != null) {
+                          hasDigit = true;
+                        }
+                      }
+                      if (hasLowercase && hasDigit) {
+                        setState(() {
+                          _isUsernameValid = true;
+                        });
+                      } else {
+                        setState(() {
+                          _isUsernameValid = false;
+                        });
+                      }
+                    },
                     cursorColor: Colors.white,
                     style: const TextStyle(color: Colors.white),
                     controller: _usernameController,
@@ -74,8 +104,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  _validText("Username phải đủ chữ và số", _isUsernameValid ? _validStyle : _inValidStyle),
+                  const SizedBox(height: 10),
                   TextField(
+                    onChanged: (value) {
+                      const pattern = r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$';
+                      final regExp = RegExp(pattern);
+                      if (regExp.hasMatch(value)) {
+                        setState(() {
+                          _isMailValid = true;
+                        });
+                      } else {
+                        _isMailValid = false;
+                      }
+                    },
                     style: const TextStyle(color: Colors.white),
                     cursorColor: Colors.white,
                     controller: _emailController,
@@ -91,8 +133,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  _validText("Địa chỉ mail hợp lệ.", _isMailValid ? _validStyle : _inValidStyle),
+                  const SizedBox(height: 10),
                   TextField(
+                    onChanged: (value) {
+                      const pattern = r'^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$';
+                      final regExp = RegExp(pattern);
+
+                      if (regExp.hasMatch(value)) {
+                        setState(() {
+                          _isValidPassword = true;
+                        });
+                      } else {
+                        setState(() {
+                          _isValidPassword = false;
+                        });
+                      }
+                    },
                     style: const TextStyle(color: Colors.white),
                     cursorColor: Colors.white,
                     controller: _passwordController,
@@ -110,8 +167,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     obscuringCharacter: "*",
                     obscureText: true,
                   ),
-                  const SizedBox(height: 20),
+                  _validText("Mật khẩu hợp lệ.", _isValidPassword ? _validStyle : _inValidStyle),
+                  const SizedBox(height: 10),
                   TextField(
+                    onChanged: (value) {
+                      if (value == _passwordController.text) {
+                        setState(() {
+                          _isConfirmPassword = true;
+                        });
+                      } else {
+                        setState(() {
+                          _isConfirmPassword = false;
+                        });
+                      }
+                    },
                     style: const TextStyle(color: Colors.white),
                     cursorColor: Colors.white,
                     controller: _confirmPasswordController,
@@ -129,7 +198,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     obscuringCharacter: "*",
                     obscureText: true,
                   ),
-                  const SizedBox(height: 20),
+                  _validText("Mật khẩu trùng khớp.", _isConfirmPassword ? _validStyle : _inValidStyle),
+                  const SizedBox(height: 10),
                   TextField(
                     style: const TextStyle(color: Colors.white),
                     cursorColor: Colors.white,
@@ -145,10 +215,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         color: Colors.white,
                       ),
                     ),
-                    obscureText: true,
                   ),
                   const SizedBox(height: 20),
                   TextField(
+                    onChanged: (value) {
+                      if (value == "Nam" || value == "Nu") {
+                        setState(() {
+                          _isGender = true;
+                        });
+                      } else {
+                        setState(() {
+                          _isGender = false;
+                        });
+                      }
+                    },
                     style: const TextStyle(color: Colors.white),
                     cursorColor: Colors.white,
                     controller: _genderController,
@@ -163,10 +243,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         color: Colors.white,
                       ),
                     ),
-                    obscureText: true,
                   ),
-                  const SizedBox(height: 20),
+                  _validText("Ví dụ: 'Nam' hoặc 'Nu'", _isGender ? _validStyle : _inValidStyle),
+                  const SizedBox(height: 10),
                   TextField(
+                    onChanged: (value) {
+                      const pattern = r'^\d{2}/\d{2}/\d{4}$';
+                      final regExp = RegExp(pattern);
+
+                      if (regExp.hasMatch(value)) {
+                        setState(() {
+                          _isBirthday = true;
+                        });
+                      } else {
+                        setState(() {
+                          _isBirthday = false;
+                        });
+                      }
+                    },
                     style: const TextStyle(color: Colors.white),
                     cursorColor: Colors.white,
                     controller: _birthdayController,
@@ -181,8 +275,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         color: Colors.white,
                       ),
                     ),
-                    obscureText: true,
                   ),
+                  _validText("Ngày sinh hợp lệ. Ví dụ '11/12/2000'", _isBirthday ? _validStyle : _inValidStyle),
                 ],
               ),
               Container(
@@ -261,6 +355,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
         },
       ),
     );
+  }
+
+  Widget _validText(String content, TextStyle style) {
+    return Text(
+      content,
+      style: style,
+    );
+  }
+
+  String normalizeString(String input) {
+    List<String> words = input.split(' ');
+
+    words.removeWhere((word) => word.isEmpty);
+
+    for (int i = 0; i < words.length; i++) {
+      words[i] = words[i].toLowerCase();
+      words[i] = words[i][0].toUpperCase() + words[i].substring(1);
+    }
+
+    return words.join(' ');
   }
 }
 

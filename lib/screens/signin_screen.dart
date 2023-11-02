@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:chat_app/screens/main_screen.dart';
 import 'package:chat_app/screens/signup_screen.dart';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get_ip_address/get_ip_address.dart';
@@ -178,17 +179,14 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Future<bool> _signin(String email, String password) async {
     try {
-      // URL của server để gửi POST request
-      // Thay đổi URL tương ứng
       final url = Uri.parse('https://ae71-2402-800-63b9-845e-7c4d-c81e-c877-d0e1.ngrok-free.app/api/auth/login');
-
-      // Gửi dữ liệu email và password dưới dạng body của request
+      String hashPassword = md5Encrypt(password);
       final response = await http.post(
         url,
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(<String, String>{
           "email": email,
-          "password": password,
+          "password": hashPassword,
         }),
       );
 
@@ -200,6 +198,12 @@ class _SignInScreenState extends State<SignInScreen> {
     } catch (error) {
       return false;
     }
+  }
+
+  String md5Encrypt(String input) {
+    var bytes = utf8.encode(input);
+    var digest = md5.convert(bytes);
+    return digest.toString();
   }
 
   void _showDialog(BuildContext context) {
