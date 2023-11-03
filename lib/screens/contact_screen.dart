@@ -43,7 +43,7 @@ class _ContactScreenState extends State<ContactScreen> {
               prefixIcon: IconButton(
                 icon: const Icon(Icons.search),
                 onPressed: () {
-                  // Perform the search here
+                  print("đang tìm kiếm");
                 },
               ),
 

@@ -10,7 +10,6 @@ class ListChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ListChatScreen> {
-  final TextEditingController _searchController = TextEditingController();
   bool isPressed = false;
   @override
   Widget build(BuildContext context) {
