@@ -143,7 +143,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               },
                               decoration: InputDecoration(
                                 border: InputBorder.none,
-                                hintText: "Type a message",
+                                hintText: "Aa",
                                 prefixIcon: IconButton(
                                   onPressed: () {
                                     focusNode.unfocus();
@@ -153,21 +153,6 @@ class _ChatScreenState extends State<ChatScreen> {
                                     });
                                   },
                                   icon: const Icon(Icons.emoji_emotions_outlined),
-                                ),
-                                suffixIcon: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        //
-                                      },
-                                      icon: const Icon(Icons.attach_file),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.camera_alt),
-                                    ),
-                                  ],
                                 ),
                                 contentPadding: const EdgeInsets.all(5),
                               ),

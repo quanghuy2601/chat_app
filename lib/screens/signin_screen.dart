@@ -35,7 +35,7 @@ class _SignInScreenState extends State<SignInScreen> {
               children: <Widget>[
                 _header(context),
                 _inputField(context),
-                _forgotPassword(context),
+                //_forgotPassword(context),
                 _signup(context),
               ],
             ),
@@ -117,7 +117,7 @@ class _SignInScreenState extends State<SignInScreen> {
           style: ElevatedButton.styleFrom(
             shape: const StadiumBorder(),
             padding: const EdgeInsets.symmetric(vertical: 16),
-            backgroundColor: Colors.blueAccent,
+            backgroundColor: Color.fromRGBO(163, 52, 250, 1),
           ),
           child: const Text(
             "Login",
@@ -163,23 +163,24 @@ class _SignInScreenState extends State<SignInScreen> {
           style: TextStyle(color: Colors.white),
         ),
         TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SignUpScreen()),
-              );
-            },
-            child: const Text(
-              "Sign Up",
-              style: TextStyle(color: Colors.blueAccent),
-            ))
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SignUpScreen()),
+            );
+          },
+          child: const Text(
+            "Sign Up",
+            style: TextStyle(color: Color.fromRGBO(163, 52, 250, 1)),
+          ),
+        )
       ],
     );
   }
 
   Future<bool> _signin(String email, String password) async {
     try {
-      final url = Uri.parse('https://ae71-2402-800-63b9-845e-7c4d-c81e-c877-d0e1.ngrok-free.app/api/auth/login');
+      final url = Uri.parse('localhost:5000/api/auth/login');
       String hashPassword = md5Encrypt(password);
       final response = await http.post(
         url,

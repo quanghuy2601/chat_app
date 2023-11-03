@@ -1,6 +1,9 @@
 import 'dart:convert';
 
+import 'package:chat_app/screens/otp_screen.dart';
 import 'package:chat_app/screens/signin_screen.dart';
+import 'package:crypto/crypto.dart';
+import 'package:email_otp/email_otp.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,7 +25,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final TextStyle _validStyle = const TextStyle(color: Colors.green);
   final TextStyle _inValidStyle = const TextStyle(color: Colors.red);
-  final TextStyle _defaultStyle = const TextStyle(color: Colors.grey);
+  //final TextStyle _defaultStyle = const TextStyle(color: Colors.grey);
 
   bool _isUsernameValid = false;
   bool _isMailValid = false;
@@ -30,6 +33,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _isConfirmPassword = false;
   bool _isGender = false;
   bool _isBirthday = false;
+
+  EmailOTP myauth = EmailOTP();
 
   @override
   Widget build(BuildContext context) {
@@ -282,21 +287,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Container(
                   padding: const EdgeInsets.only(top: 3, left: 3),
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       // call api for sign up
-                      _signup(
-                        _usernameController.text,
-                        _passwordController.text,
-                        _emailController.text,
-                        _fullnameController.text,
-                        _genderController.text,
-                        _birthdayController.text,
+
+                      // if (await myauth.verifyOTP(otp: "123456") == true) {
+                      //   print("true");
+                      // } else {
+                      //   print("false");
+                      // }
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => OtpScreen(
+                                  email: _emailController.text,
+                                )),
                       );
+
+                      // _signup(
+                      //   _usernameController.text,
+                      //   _passwordController.text,
+                      //   _emailController.text,
+                      //   _fullnameController.text,
+                      //   _genderController.text,
+                      //   _birthdayController.text,
+                      // );
                     },
                     style: ElevatedButton.styleFrom(
                       shape: const StadiumBorder(),
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      backgroundColor: Colors.blueAccent,
+                      backgroundColor: Color.fromRGBO(163, 52, 250, 1),
                     ),
                     child: const Text(
                       "Sign up",
@@ -319,7 +339,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                     child: const Text(
                       "Login",
-                      style: TextStyle(color: Colors.blueAccent),
+                      style: TextStyle(color: Color.fromRGBO(163, 52, 250, 1)),
                     ),
                   )
                 ],
@@ -348,8 +368,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         <String, String>{
           //'username': username,
           'email': email,
-          'password': password,
-          'fullname': fullname,
+          'password': md5Encrypt(password),
+          'fullname': normalizeString(fullname),
           'gender': gender,
           'birthday': birthday,
         },
@@ -375,6 +395,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
 
     return words.join(' ');
+  }
+
+  String md5Encrypt(String input) {
+    var bytes = utf8.encode(input);
+    var digest = md5.convert(bytes);
+    return digest.toString();
   }
 }
 

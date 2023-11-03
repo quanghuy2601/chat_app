@@ -13,14 +13,23 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int currentScreen = 0;
+  int currentTitle = 0;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final ScrollController scrollController = ScrollController();
 
   void _onItemTapped(int index) {
     setState(() {
       currentScreen = index;
+      currentTitle = index;
     });
   }
+
+  final title = [
+    "Đoạn chat",
+    "Cuộc gọi",
+    "Danh sách bạn bè",
+    "Tin",
+  ];
 
   final screen = [
     ListChatScreen(),
@@ -28,6 +37,12 @@ class _MainScreenState extends State<MainScreen> {
     ContactScreen(),
     StoryScreen(),
   ];
+
+  @override
+  void initState() {
+    //
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +92,7 @@ class _MainScreenState extends State<MainScreen> {
             }
           },
         ),
-        title: const Text("Đoạn chat"),
+        title: Text(title[currentTitle]),
         centerTitle: true,
         backgroundColor: Colors.black,
         actions: [
