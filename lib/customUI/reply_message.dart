@@ -28,7 +28,7 @@ class _ReplyMessageState extends State<ReplyMessage> {
                   bottom: 10,
                 ),
                 child: Text(
-                  "Đây là 1 tin nhắn hơi dài",
+                  "Hi",
                   style: const TextStyle(
                     fontSize: 16,
                     color: Colors.white,

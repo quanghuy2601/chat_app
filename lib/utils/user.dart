@@ -21,34 +21,4 @@ List<User> users = [
     name: "Đặng Văn Anh Nguyên",
     isOnline: false,
   ),
-  User(
-    avatar: "assets/avatars/avatar_1.png",
-    name: "Trần Quang Huy",
-    isOnline: true,
-  ),
-  User(
-    avatar: "assets/avatars/avatar_2.png",
-    name: "Đặng Văn Anh Nguyên",
-    isOnline: false,
-  ),
-  User(
-    avatar: "assets/avatars/avatar_1.png",
-    name: "Trần Quang Huy",
-    isOnline: true,
-  ),
-  User(
-    avatar: "assets/avatars/avatar_2.png",
-    name: "Đặng Văn Anh Nguyên",
-    isOnline: false,
-  ),
-  User(
-    avatar: "assets/avatars/avatar_1.png",
-    name: "Trần Quang Huy",
-    isOnline: true,
-  ),
-  User(
-    avatar: "assets/avatars/avatar_2.png",
-    name: "Đặng Văn Anh Nguyên",
-    isOnline: false,
-  ),
 ];

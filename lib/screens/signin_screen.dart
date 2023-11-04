@@ -17,7 +17,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -52,14 +52,14 @@ class _SignInScreenState extends State<SignInScreen> {
         TextField(
           style: const TextStyle(color: Colors.white),
           cursorColor: Colors.white,
-          controller: _emailController,
+          controller: _usernameController,
           decoration: InputDecoration(
             iconColor: Colors.white,
             prefixIconColor: Colors.grey,
             suffixIconColor: Colors.grey,
             hoverColor: Colors.white,
             focusColor: Colors.white,
-            hintText: "Email",
+            hintText: "Username",
             hintStyle: const TextStyle(color: Colors.white),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(18), borderSide: BorderSide.none),
             fillColor: Colors.white.withOpacity(0.1),
@@ -98,7 +98,8 @@ class _SignInScreenState extends State<SignInScreen> {
         ElevatedButton(
           onPressed: () async {
             // Login
-            if (await _signin(_emailController.text, _passwordController.text)) {
+
+            if (await _signin(_usernameController.text, _passwordController.text)) {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const MainScreen()),
@@ -106,13 +107,13 @@ class _SignInScreenState extends State<SignInScreen> {
             } else {
               _showDialog(context);
             }
-            try {
-              var ipAddress = IpAddress(type: RequestType.json);
-              dynamic data = await ipAddress.getIpAddress();
-              print(data.toString());
-            } on IpAddressException catch (exception) {
-              print(exception.message);
-            }
+            // try {
+            //   var ipAddress = IpAddress(type: RequestType.json);
+            //   dynamic data = await ipAddress.getIpAddress();
+            //   print(data.toString());
+            // } on IpAddressException catch (exception) {
+            //   print(exception.message);
+            // }
           },
           style: ElevatedButton.styleFrom(
             shape: const StadiumBorder(),
@@ -173,30 +174,44 @@ class _SignInScreenState extends State<SignInScreen> {
             "Sign Up",
             style: TextStyle(color: Color.fromRGBO(163, 52, 250, 1)),
           ),
-        )
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MainScreen()),
+            );
+          },
+          child: const Text(
+            "Backdoor",
+            style: TextStyle(color: Color.fromRGBO(163, 52, 250, 1)),
+          ),
+        ),
       ],
     );
   }
 
-  Future<bool> _signin(String email, String password) async {
+  Future<bool> _signin(String username, String password) async {
     try {
-      final url = Uri.parse('localhost:5000/api/auth/login');
-      String hashPassword = md5Encrypt(password);
+      final url = Uri.parse('http://localhost:5000/api/auth/login');
+
       final response = await http.post(
         url,
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(<String, String>{
-          "email": email,
-          "password": hashPassword,
+          "username": username,
+          "password": md5Encrypt(password),
         }),
       );
 
       if (response.statusCode == 200) {
+        print(response.body);
         return true;
       } else {
         return false;
       }
     } catch (error) {
+      print(error.toString());
       return false;
     }
   }

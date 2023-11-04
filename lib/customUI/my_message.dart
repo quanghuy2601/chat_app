@@ -40,7 +40,7 @@ class _MyMessageState extends State<MyMessage> {
                   bottom: 10,
                 ),
                 child: Text(
-                  "Đây là 1 tin nhắn khá dài",
+                  "hello",
                   style: const TextStyle(
                     fontSize: 16,
                     color: Colors.white,

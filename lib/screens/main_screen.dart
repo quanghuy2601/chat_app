@@ -1,6 +1,7 @@
 import 'package:chat_app/screens/list_chat_screen.dart';
 import 'package:chat_app/screens/contact_screen.dart';
 import 'package:chat_app/screens/listfriend_screen.dart';
+import 'package:chat_app/screens/signin_screen.dart';
 import 'package:chat_app/screens/story_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -57,20 +58,24 @@ class _MainScreenState extends State<MainScreen> {
                 color: Colors.black,
               ),
               child: Text(
-                "Drawer Header",
-                style: TextStyle(color: Colors.white),
+                "Trần Quang Huy",
+                style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
             ListTile(
-              title: const Text('Item 1'),
+              title: const Text('Thông tin tài khoản'),
               onTap: () {
-                //
+                print("Thông tin tài khoản");
               },
             ),
             ListTile(
-              title: const Text('Item 2'),
+              title: const Text('Đăng xuất'),
               onTap: () {
-                //
+                print("Đăng xuất");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SignInScreen()),
+                );
               },
             ),
           ],

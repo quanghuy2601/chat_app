@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:chat_app/customUI/my_message.dart';
 import 'package:chat_app/customUI/reply_message.dart';
 import 'package:chat_app/screens/video_call_screen.dart';
 import 'package:chat_app/screens/voice_call_screen.dart';
 import 'package:flutter/material.dart';
+
+import 'package:http/http.dart' as http;
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -14,8 +18,15 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   bool sendButton = false;
   final ScrollController _scrollController = ScrollController();
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _messageController = TextEditingController();
   FocusNode focusNode = FocusNode();
+
+  @override
+  void initState() {
+    //
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +56,7 @@ class _ChatScreenState extends State<ChatScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "Trần Quang Huy",
+                  "Trần Quang Huy", //// tên bàn bè
                   style: TextStyle(fontSize: 15),
                 ),
                 Text(
@@ -97,9 +108,10 @@ class _ChatScreenState extends State<ChatScreen> {
               //height: MediaQuery.of(context).size.height - 140,
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: 1,
+                itemCount: 1, //// số lượng tin nhắn
                 itemBuilder: (BuildContext context, int index) {
                   return Column(
+                    /// truyền tin nhắn đến các thẻ tin nhắn
                     children: [
                       MyMessage(),
                       ReplyMessage(),
@@ -126,7 +138,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               borderRadius: BorderRadius.circular(25),
                             ),
                             child: TextFormField(
-                              controller: _controller,
+                              controller: _messageController,
                               focusNode: focusNode,
                               textAlignVertical: TextAlignVertical.center,
                               keyboardType: TextInputType.multiline,
@@ -173,7 +185,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                     curve: Curves.easeOut,
                                   );
                                   // send message function
-                                  _controller.clear();
+                                  _messageController.clear();
                                   setState(() {
                                     sendButton = false;
                                   });
@@ -196,5 +208,31 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _getListMessage() async {
+    try {
+      final url = Uri.parse('http://10.15.38.139:5000/api//model/message'); // api lấy danh sách tin nhắn
+
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(<String, String>{
+          //
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        //return true;
+      } else {
+        //return false;
+      }
+    } catch (error) {
+      print(error.toString());
+    }
+  }
+
+  void _sendMessage(String message) {
+    //
   }
 }

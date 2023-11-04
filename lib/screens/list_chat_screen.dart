@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:chat_app/screens/chat_screen.dart';
 import 'package:chat_app/utils/user.dart';
 import 'package:flutter/material.dart';
+
+import 'package:http/http.dart' as http;
 
 class ListChatScreen extends StatefulWidget {
   const ListChatScreen({super.key});
@@ -11,6 +15,13 @@ class ListChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ListChatScreen> {
   bool isPressed = false;
+
+  @override
+  void initState() {
+    //
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,8 +39,7 @@ class _ChatScreenState extends State<ListChatScreen> {
                 child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    //padding: const EdgeInsets.all(10),
-                    itemCount: users.length,
+                    itemCount: users.length, ///////// số lượng cuộc trò chuyện
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -63,12 +73,14 @@ class _ChatScreenState extends State<ListChatScreen> {
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   //padding: const EdgeInsets.all(10),
-                  itemCount: users.length,
+                  itemCount: users.length, ////////// số lượng cuộc trò chuyện
                   itemBuilder: (BuildContext context, int index) {
                     return Column(
                       children: <Widget>[
                         InkWell(
                           onTap: () {
+                            // mở cuộc trò chuyện
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => const ChatScreen()),
@@ -109,7 +121,7 @@ class _ChatScreenState extends State<ListChatScreen> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: <Widget>[
                                         Text(
-                                          users[index].name,
+                                          users[index].name, ////// tên bàn bè
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 18,
@@ -132,5 +144,27 @@ class _ChatScreenState extends State<ListChatScreen> {
         );
       }),
     );
+  }
+
+  Future<void> _getListConversation() async {
+    try {
+      final url = Uri.parse('http://10.15.38.139:5000/api/model/conversation'); // api lấy danh sách cuộc trò chuyện
+
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(<String, String>{
+          //
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        //return true;
+      } else {
+        //return false;
+      }
+    } catch (error) {
+      print(error.toString());
+    }
   }
 }

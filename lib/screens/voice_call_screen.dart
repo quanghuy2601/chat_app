@@ -10,8 +10,8 @@ class VoiceCallScreen extends StatelessWidget {
     return ZegoUIKitPrebuiltCall(
       appID: 167817904, // Fill in the appID that you get from ZEGOCLOUD Admin Console.
       appSign: "d2c14adad36ef21a4c2b094d38548b3ec4089de371351b965dc17cff309352de", // Fill in the appSign that you get from ZEGOCLOUD Admin Console.
-      userID: "quanghuy",
-      userName: "quanghuy1",
+      userID: "dustyfate",
+      userName: "dustyfate1",
       callID: callID,
       // You can also use groupVideo/groupVoice/oneOnOneVoice to make more types of calls.
       config: ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall()..onOnlySelfInRoom = (context) => Navigator.of(context).pop(),

@@ -288,14 +288,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   padding: const EdgeInsets.only(top: 3, left: 3),
                   child: ElevatedButton(
                     onPressed: () async {
-                      // call api for sign up
-
-                      // if (await myauth.verifyOTP(otp: "123456") == true) {
-                      //   print("true");
-                      // } else {
-                      //   print("false");
-                      // }
-
+                      // if (await _signup(
+                      //   _usernameController.text,
+                      //   _passwordController.text,
+                      //   _emailController.text,
+                      //   _fullnameController.text,
+                      //   _genderController.text,
+                      //   _birthdayController.text,
+                      // )) {}
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -303,15 +303,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   email: _emailController.text,
                                 )),
                       );
-
-                      // _signup(
-                      //   _usernameController.text,
-                      //   _passwordController.text,
-                      //   _emailController.text,
-                      //   _fullnameController.text,
-                      //   _genderController.text,
-                      //   _birthdayController.text,
-                      // );
                     },
                     style: ElevatedButton.styleFrom(
                       shape: const StadiumBorder(),
@@ -351,30 +342,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Future<http.Response> _signup(
+  Future<bool> _signup(
     String username,
     String password,
     String email,
     String fullname,
     String gender,
     String birthday,
-  ) {
-    return http.post(
-      Uri.parse('https://d30b-2402-800-63b9-ce8f-441f-6e18-f9b0-8d8e.ngrok-free.app/api/auth/register'),
-      headers: <String, String>{
-        'Accept': 'application/json',
-      },
-      body: jsonEncode(
-        <String, String>{
-          //'username': username,
-          'email': email,
-          'password': md5Encrypt(password),
-          'fullname': normalizeString(fullname),
-          'gender': gender,
-          'birthday': birthday,
-        },
-      ),
-    );
+  ) async {
+    try {
+      final url = Uri.parse('http://10.15.38.139:5000/api/auth/register');
+      print("start");
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(<String, String>{
+          "username": username,
+          "email": email,
+          "password": md5Encrypt(password),
+          "fullname": normalizeString(fullname),
+          "gender": gender,
+          "birthday": birthday,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      print(error.toString());
+      return false;
+    }
   }
 
   Widget _validText(String content, TextStyle style) {
